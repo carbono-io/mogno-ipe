@@ -7,16 +7,12 @@
  */
 'use strict';
  
- var CONTAINER_PATH = '/container/';
+ var MACHINE_PATH = '/machines';
 
 module.exports = function (app) {
-
     var container = app.controllers.container;
     
-    app.get(CONTAINER_PATH, container.list);
-    app.post(CONTAINER_PATH, container.create);
-    app.delete(CONTAINER_PATH, container.destroy);
+    app.post(MACHINE_PATH, container.create);
 
     return this;
-
 };
