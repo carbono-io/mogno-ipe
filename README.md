@@ -2,7 +2,7 @@
 Description
 ===========
 This module is responsible for fowarding machine creation and destruction requests
-to Nogueira (responsible for managing continers). See out architecture specs for more 
+to Nogueira (responsible for managing containers). See our architecture specs for more 
 details on the Ipê module
 
 Installation and Running
