@@ -1,9 +1,9 @@
 # MOGNO - Ipê module
 Description
 ===========
-This module is responsable for creating and destroying containers in the
-carbono.io PaaS for the app's components. See Architecture Specs for more 
-details on IPE module.
+This module is responsible for fowarding machine creation and destruction requests
+to Nogueira (responsible for managing continers). See out architecture specs for more 
+details on the Ipê module
 
 Installation and Running
 ============
