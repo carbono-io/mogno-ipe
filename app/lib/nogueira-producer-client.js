@@ -16,7 +16,7 @@ var NogueiraProducerClient = function () {
 
     /**
      * Makes a request to the Nogueira Producer
-     * so it can create a machine deployment 
+     * so it can create a machine deployment
      * request.
      *
      * @function
@@ -64,11 +64,11 @@ var NogueiraProducerClient = function () {
      * Creates an object that will be used to make
      * a request. The object contains basic properties
      * like the url and content type.
-     *  
+     *
      * @param {string} Endpoint that is to be concatenated
      *                 to the base url to form the complete uri.
      *
-     * @returns {Object} Request object. 
+     * @returns {Object} Request object.
      */
     function createBaseRequestForEndpoint(endpoint) {
         return {
@@ -82,11 +82,11 @@ var NogueiraProducerClient = function () {
     /**
      * Creates a payload according to Google JSON
      * Style Guide.
-     *  
+     *
      * @function
      * @param {Object} Object containing relevant data
-     * 
-     * @returns {Object} Object representation of the 
+     *
+     * @returns {Object} Object representation of the
      *                   JSON payload.
      */
     function createPayloadForData(data) {
