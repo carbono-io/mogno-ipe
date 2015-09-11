@@ -13,7 +13,7 @@ var consign    = require('consign');
 var bodyParser = require('body-parser');
 
 // Default port 
-var IPE_PORT = 8000;
+var IPE_PORT = 12739;
 
 var app = express();
 
@@ -27,6 +27,6 @@ consign({cwd: 'app'})
     .into(app);
 
 var server = app.listen(IPE_PORT, function () {
-    console.log('INFO MOGNO IPE listening at http://%s:%s', 
+    console.log('Ipe listening at http://%s:%s', 
 		server.address().address, server.address().port);
 });

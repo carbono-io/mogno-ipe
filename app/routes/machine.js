@@ -7,12 +7,12 @@
  */
 'use strict';
  
- var MACHINE_PATH = '/machines';
+ var MACHINE_PATH = '/paas/machines';
 
 module.exports = function (app) {
-    var container = app.controllers.container;
+    var machine = app.controllers.machine;
     
-    app.post(MACHINE_PATH, container.create);
+    app.post(MACHINE_PATH, machine.create);
 
     return this;
 };

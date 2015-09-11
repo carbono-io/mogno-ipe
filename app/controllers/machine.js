@@ -1,70 +1,37 @@
-/**
- * Handles the creation and destruction of containers
- *
- * @author flaminio
- * @author The Carbono.io Team
- * @date 2015-09-03
- */
+'use strict';
 
-// External imports
-//var cd    = require('carbono-docker');
-//var cjm   = require('carbono-json-message');
-//var proxy = require('carbono-proxy-service');
+var NogueiraProducerClient = require('../lib/nogueira-producer-client');
 
-// Machine on dockerhub to be loaded if no specification is sent to json post.
-var DEFAULT_CODE_MACHINE = 'simonfan/code-machine';
+module.exports = function () {
+	/**
+	 * Sends machine creation request to 
+	 * Nogueira Producer.
+	 * @function
+	 *
+	 * @param {Object} Request
+	 * @param {Object} Response
+	 *
+	 * @returns {string} Token which can be used to verify
+	 *					 if the requested machine is already
+	 *				     up or not.
+	 * 
+	 */ 
+	var create = function (req, res) {
+	    var npc = new NogueiraProducerClient();
 
-/**
- * Enqueues the request to create a new machine.
- * @function
- *
- * @param {Object} Requisição
- * @param {Object} Resposta
- * 
- */ 
-var enqueueRequest = function (req, res) {
-    
-};
+	    var promiseCreateMachine = npc.createMachineRequest(req.body.data);
 
-module.exports = function (app) {
+	    promiseCreateMachine
+	    	.then(function (token) {
+	    		res.json({token: token});
+	    	}, function (err) {
+	    		res.json({err: err});
+	    	});
+	};
+
     var machineController = {
-        enqueueRequest: enqueueRequest
+        create: create,
     };
 
     return machineController;
-	
-	// /**
-	//  * Creates an container as specified in the json message
-	//  */
- //    this.create = function (req, res){
- //        console.log('DEBUG calling container.create()');
-	// 	res.json(
-	// 		{
-	// 			message: 'So far, so good.'
-	// 		}
-	// 	);        
- //    };
-
-	// /**
-	//  * Destroys an container as specified in the json message
-	//  */
- //    this.destroy = function (req, res) {
- //        console.log('DEBUG calling container.destroy()');
-	// 	res.json(
-	// 		{
-	// 			message: 'Doing well.'
-	// 		}
-	// 	)
- //    };
-
- //    this.list = function (req, res) {
- //        console.log('DEBUG calling container.list()');
-	// 	res.json(
-	// 		{
-	// 			message: 'You couldn\'t be better.'
-	// 		}
-	// 	)
- //    };
-
- //    return this;
 };
