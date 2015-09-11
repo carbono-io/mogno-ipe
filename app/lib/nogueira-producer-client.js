@@ -55,7 +55,9 @@ var NogueiraProducerClient = function () {
                 return;
             }
 
-            deffered.resolve(body);
+            body = JSON.parse(body);
+
+            deffered.resolve(body.data.token);
         });
 
         return deffered.promise;
@@ -81,7 +83,9 @@ var NogueiraProducerClient = function () {
                 return;
             }
 
-            deffered.resolve(body);
+            body = JSON.parse(body);
+
+            deffered.resolve(body.data.status);
         });
 
         return deffered.promise;

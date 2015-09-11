@@ -1,6 +1,8 @@
 'use strict';
 
 var NogueiraProducerClient = require('../lib/nogueira-producer-client');
+var pjson                  = require('../../package.json');
+var CJM                    = require('carbono-json-messages');
 
 module.exports = function () {
     /**
@@ -18,9 +20,15 @@ module.exports = function () {
 
         promiseCreateMachine
             .then(function (token) {
-                res.json({token: token});
+                var data = {
+                    token: token,
+                };
+
+                res.status(201).json(createJsonResponse(data, undefined));
             }, function (err) {
-                res.json({err: err});
+                res
+                    .status(err.code || 500)
+                    .json(createJsonResponse(undefined, err));
             });
     };
 
@@ -40,10 +48,41 @@ module.exports = function () {
 
         promiseTokenStatus
             .then(function (status) {
-                res.json({status: status});
+                var data = {
+                    status: status,
+                };
+
+                res.status(200).json(createJsonResponse(data, undefined));
             }, function (err) {
-                res.json({err: err});
+                res
+                    .status(err.code || 500)
+                    .json(createJsonResponse(undefined, err));
             });
+    };
+
+    /**
+     * Creates a response following Google's
+     * JSON style guide (which is implemented
+     * by the Carbono JSON Messages).
+     *
+     * @param {Object} Object with relevant data
+     *                 to be put in the response.
+     * @param {Object} Errors that may have occurred
+     *                 along the way.
+     * 
+     * @returns {Object} Response object following
+     *                   Google's JSON style guide.
+     */
+    var createJsonResponse = function (data, error) {
+        var cjm = new CJM({apiVersion: pjson.version});
+
+        if (data) {
+            cjm.setData(data);
+        } else {
+            cjm.setError(error);
+        }
+
+        return cjm.toObject();
     };
 
     var machineController = {
