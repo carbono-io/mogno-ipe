@@ -4,6 +4,7 @@ var request = require('request');
 var q       = require('q');
 var CJM     = require('carbono-json-messages');
 var pjson   = require('../../package.json');
+var path    = require('path');
 
 /**
  * Interface used to comunicate with our
@@ -48,6 +49,32 @@ var NogueiraProducerClient = function () {
         options.json = payload;
 
         request.post(options, function (err, res, body) {
+            if (err) {
+                deffered.reject(err);
+
+                return;
+            }
+
+            deffered.resolve(body);
+        });
+
+        return deffered.promise;
+    };
+
+    /**
+     * Retrieves the status of the token by
+     * making a request to Nogueira Storage.
+     *
+     * @param {string} Token whose status is to be
+     *                 retrieved.
+     */
+    this.getStatusForToken = function (token) {
+        var deffered = q.defer();
+
+        var endpoint = path.join(ENDPOINT_MACHINES, token);
+        var options = createBaseRequestForEndpoint(endpoint);
+
+        request.get(options, function (err, res, body) {
             if (err) {
                 deffered.reject(err);
 

@@ -10,11 +10,6 @@ module.exports = function () {
      *
      * @param {Object} Request
      * @param {Object} Response
-     *
-     * @returns {string} Token which can be used to verify
-     *					 if the requested machine is already
-     *				     up or not.
-     *
      */
     var create = function (req, res) {
         var npc = new NogueiraProducerClient();
@@ -29,8 +24,31 @@ module.exports = function () {
             });
     };
 
+    /**
+     * Retrieves the given token's status.
+     *
+     * @function
+     *
+     * @param {Object} Request
+     * @param {Object} Response
+     */
+    var getTokenStatus = function (req, res) {
+        var token = req.params.token;
+        var npc = new NogueiraProducerClient();
+
+        var promiseTokenStatus = npc.getStatusForToken(token);
+
+        promiseTokenStatus
+            .then(function (status) {
+                res.json({status: status});
+            }, function (err) {
+                res.json({err: err});
+            });
+    };
+
     var machineController = {
         create: create,
+        getTokenStatus: getTokenStatus,
     };
 
     return machineController;
