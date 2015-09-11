@@ -69,7 +69,7 @@ module.exports = function () {
      *                 to be put in the response.
      * @param {Object} Errors that may have occurred
      *                 along the way.
-     * 
+     *
      * @returns {Object} Response object following
      *                   Google's JSON style guide.
      */
