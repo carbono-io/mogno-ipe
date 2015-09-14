@@ -50,13 +50,15 @@ var NogueiraProducerClient = function () {
 
         request.post(options, function (err, res, body) {
             if (err) {
-                deffered.reject(err);
-
-                return;
+                return deffered.reject(err);
             }
 
             if (typeof body !== 'object') {
                 body = JSON.parse(body);
+            }
+
+            if (typeof body.error !== 'undefined') {
+                return deffered.reject(body.error);
             }
 
             deffered.resolve(body.data.token);
@@ -79,14 +81,16 @@ var NogueiraProducerClient = function () {
         var options = createBaseRequestForEndpoint(endpoint);
 
         request.get(options, function (err, res, body) {
-            if (err) {
-                deffered.reject(err);
-
-                return;
-            }
-
             if (typeof body !== 'object') {
                 body = JSON.parse(body);
+            }
+
+            if (err) {
+                return deffered.reject(err, 500);
+            }
+
+            if (res.statusCode !== 200) {
+                return deffered.reject(body.error, res.statusCode);
             }
 
             deffered.resolve(body.data.status);
