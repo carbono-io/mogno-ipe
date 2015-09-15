@@ -53,7 +53,7 @@ var NogueiraProducerClient = function () {
                 body = JSON.parse(body);
             }
 
-            var success = (typeof res !== 'undefined') && 
+            var success = (typeof res !== 'undefined') &&
                           (res.statusCode >= 200) &&
                           (res.statusCode < 300);
 
@@ -62,7 +62,7 @@ var NogueiraProducerClient = function () {
             } else {
                 var error = {
                     code: 500,
-                    message: 'Something went wrong'
+                    message: 'Something went wrong',
                 };
 
                 if (err) {
@@ -97,7 +97,7 @@ var NogueiraProducerClient = function () {
                 body = JSON.parse(body);
             }
 
-            var success = (typeof res !== 'undefined') && 
+            var success = (typeof res !== 'undefined') &&
                           (res.statusCode >= 200) &&
                           (res.statusCode < 300);
 
@@ -106,7 +106,7 @@ var NogueiraProducerClient = function () {
             } else {
                 var error = {
                     code: 500,
-                    message: 'Something went wrong'
+                    message: 'Something went wrong',
                 };
 
                 if (err) {

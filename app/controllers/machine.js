@@ -13,7 +13,7 @@ module.exports = function () {
      * @param {Object} Request
      * @param {Object} Response
      */
-    var create = function (req, res, next) {
+    var create = function (req, res) {
         var npc = new NogueiraProducerClient();
 
         var promiseCreateMachine = npc.createMachineRequest(req.body.data);
@@ -71,7 +71,7 @@ module.exports = function () {
         cjm.setData(data);
 
         return cjm.toObject();
-    }
+    };
 
     /**
      * Creates an error response, following Google's
@@ -94,7 +94,7 @@ module.exports = function () {
         }
 
         return cjm.toObject();
-    }
+    };
 
     var machineController = {
         create: create,
