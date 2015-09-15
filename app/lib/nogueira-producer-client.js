@@ -49,19 +49,31 @@ var NogueiraProducerClient = function () {
         options.json = payload;
 
         request.post(options, function (err, res, body) {
-            if (err) {
-                return deffered.reject(err);
-            }
-
-            if (typeof body !== 'object') {
+            if (typeof body === 'string') {
                 body = JSON.parse(body);
             }
 
-            if (typeof body.error !== 'undefined') {
-                return deffered.reject(body.error);
-            }
+            var success = (typeof res !== 'undefined') && 
+                          (res.statusCode >= 200) &&
+                          (res.statusCode < 300);
 
-            deffered.resolve(body.data.token);
+            if (success) {
+                deffered.resolve(body.data.id);
+            } else {
+                var error = {
+                    code: 500,
+                    message: 'Something went wrong'
+                };
+
+                if (err) {
+                    error = err;
+                    error.code = 500;
+                } else if (typeof body.error !== 'undefined') {
+                    error = body.error;
+                }
+
+                deffered.reject(error);
+            }
         });
 
         return deffered.promise;
@@ -81,19 +93,31 @@ var NogueiraProducerClient = function () {
         var options = createBaseRequestForEndpoint(endpoint);
 
         request.get(options, function (err, res, body) {
-            if (typeof body !== 'object') {
+            if (typeof body === 'string') {
                 body = JSON.parse(body);
             }
 
-            if (err) {
-                return deffered.reject(err, 500);
-            }
+            var success = (typeof res !== 'undefined') && 
+                          (res.statusCode >= 200) &&
+                          (res.statusCode < 300);
 
-            if (res.statusCode !== 200) {
-                return deffered.reject(body.error, res.statusCode);
-            }
+            if (success) {
+                deffered.resolve(body.data.status);
+            } else {
+                var error = {
+                    code: 500,
+                    message: 'Something went wrong'
+                };
 
-            deffered.resolve(body.data.status);
+                if (err) {
+                    error = err;
+                    error.code = 500;
+                } else if (typeof body.error !== 'undefined') {
+                    error = body.error;
+                }
+
+                deffered.reject(error);
+            }
         });
 
         return deffered.promise;

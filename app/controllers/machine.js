@@ -13,7 +13,7 @@ module.exports = function () {
      * @param {Object} Request
      * @param {Object} Response
      */
-    var create = function (req, res) {
+    var create = function (req, res, next) {
         var npc = new NogueiraProducerClient();
 
         var promiseCreateMachine = npc.createMachineRequest(req.body.data);
@@ -21,7 +21,7 @@ module.exports = function () {
         promiseCreateMachine
             .then(function (token) {
                 var data = {
-                    token: token,
+                    id: token,
                 };
 
                 res.status(201).json(createSuccessResponse(data));
@@ -50,11 +50,9 @@ module.exports = function () {
                     status: status,
                 };
 
-                res.status(200).json(createJsonResponse(data, undefined));
-            }, function (err, code) {
-                res
-                    .status(code || 500)
-                    .json(createJsonResponse(undefined, err));
+                res.status(200).json(createSuccessResponse(data));
+            }, function (err) {
+                res.status(err.code).json(createErrorResponse(err));
             });
     };
 
