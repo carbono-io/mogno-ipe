@@ -1,103 +1,187 @@
 'use strict';
-// Native imports
-// var net = require('net');
-
-// Extern Imports
 var sinon = require('sinon');
 var chai = require('chai');
-chai.should();
-
-// Setup basic express server
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-var port = process.env.PORT || 5000;
-var trucoprotocol = require('../app/protocol/trucoprotocol.js');
-
-var ioClient = require('socket.io-client');
-
-// var game = require('../app/lib/game.js');
-
 var sinonChai = require('sinon-chai');
 sinon.defaultConfig.useFakeTimers = false;
-
+chai.should();
 chai.use(sinonChai);
 
-describe('Example Stubbing net.Socket', function () {
+var NogueiraProducerClient = require('../app/lib/nogueira-producer-client.js');
+
+describe('nogueira-producer-client', function () {
     before(function () {
-        server.listen(port, function () {
-            console.log('Truco last round on port %d', port);
-        });
-
-        // Routing
-        app.use(express.static(__dirname + '/public'));
-        trucoprotocol.createRoutes(io);
-
-        // mock = sinon.mock(game);
-        // mock.expects('play');
     });
 
     after(function () {
-        console.log('Truco last end');
-        io.close();
     });
 
-    // var mock;
-    before(function () {
-        server.listen(port, function () {
-            console.log('Truco last round on port %d', port);
+    describe('helper functions - createPayloadForData', function () {
+        it('success2', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+
+            var data = {
+                id: 'id1234',
+                items: [
+                    {
+                        component: 'crud-basic',
+                        route: 'foo',
+                        environment: 'DEV',
+                    },
+                ],
+            };
+
+            var promiss = npc.createMachineRequest(data);
+
+            promiss
+                .then(function (token) {
+                    token.should.be.equals('TOKEN-0001');
+                })
+                .done(function () {
+                    done();
+                });
         });
 
-        // Routing
-        app.use(express.static(__dirname + '/public'));
-        trucoprotocol.createRoutes(io);
+        it('fail 400', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
 
-        // mock = sinon.mock(game);
-        // mock.expects('play');
-    });
+            var data = {
+                id: 'id1234',
+                items: [
+                    {
+                        component: 'crud-basic2',
+                        route: 'foo',
+                        environment: 'DEV',
+                    },
+                ],
+            };
 
-    after(function () {
-        console.log('Truco last end');
-        io.close();
-    });
+            var promiss = npc.createMachineRequest(data);
 
-    describe('foo', function () {
-        it('Should broadcast new user to all users', function (done) {
+            promiss
+                .catch(function (err) {
+                    err.should.not.be.null;
+                    err.code.should.be.equals(400);
+                })
+                .done(function () {
+                    done();
+                });
+        });
 
-            /*
-             sinon.stub(game, 'play', function (action) {
-             // C , data, callback) {
-             if (action === 'start') {
-             return {
-             action: 'truco',
-             data: {msg: 'vai ladrao', card: 'Teste1'},
-             };
-             } else if (action === 'seis') {
-             return {
-             action: 'nove',
-             data: {msg: 'vai ladrao', card: 'Teste2'},
-             };
-             }
-             });*/
+        it('fail 404', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
 
-            console.log('new user to all users');
-            var client1 = ioClient.connect('http://localhost:5000');
+            var data = {
+                id: 'id1234',
+                items: [
+                    {
+                        component: 'crud-basic3',
+                        route: 'foo',
+                        environment: 'DEV',
+                    },
+                ],
+            };
 
-            client1.on('truco', function (data) {
-                console.log('teste');
-                console.log(data);
-                client1.emit('seis', '');
-            });
+            var promiss = npc.createMachineRequest(data);
 
-            client1.on('nove', function (data) {
-                console.log('teste2');
-                console.log(data);
-                // mock.verify();
-                done();
-                client1.disconnect();
-            });
+            promiss
+                .catch(function (err) {
+                    err.should.not.be.null;
+                    err.code.should.be.equals(404);
+                })
+                .done(function () {
+                    done();
+                });
+        });
+
+        it('fail 500', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+
+            var data = {
+                id: 'id1234',
+                items: [
+                    {
+                        component: 'crud-basic4',
+                        route: 'foo',
+                        environment: 'DEV',
+                    },
+                ],
+            };
+
+            var promiss = npc.createMachineRequest(data);
+
+            promiss
+                .catch(function (err) {
+                    err.should.not.be.null;
+                    err.should.be.equals(500);
+                })
+                .done(function () {
+                    done();
+                });
         });
     });
 
+    describe('helper functions - getStatusForToken', function () {
+        it('success', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var token = 'TOKEN-0001';
+            var promiss = npc.getStatusForToken(token);
+
+            promiss
+                .then(function (status) {
+                    status.should.be.equals('OK');
+                })
+                .done(function () {
+                    done();
+                });
+        });
+
+        it('fail 400', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+
+            var token = 'TOKEN-0002';
+            var promiss = npc.getStatusForToken(token);
+
+            promiss
+                .catch (function (err) {
+                    err.should.not.be.null;
+                    err.code.should.be.equals(400);
+                })
+                .done(function () {
+                    done();
+                });
+        });
+
+        it('fail 404', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+
+            var token = 'TOKEN-0003';
+            var promiss = npc.getStatusForToken(token);
+
+
+            promiss
+                .catch(function (err) {
+                    err.should.not.be.null;
+                    err.code.should.be.equals(404);
+                })
+                .done(function () {
+                    done();
+                });
+        });
+
+        it('fail 500', function (done) {
+            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+
+            var token = 'TOKEN-0004';
+            var promiss = npc.getStatusForToken(token);
+
+            promiss
+                .catch(function (err) {
+                    err.should.not.be.null;
+                    err.should.be.equals(500);
+                })
+                .done(function () {
+                    done();
+                });
+        });
+    });
 });
