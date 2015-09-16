@@ -47,7 +47,12 @@ module.exports = function () {
         promiseTokenStatus
             .then(function (status) {
                 var data = {
-                    status: status,
+                    id: token,
+                    items: [
+                        {
+                            status: status,
+                        },
+                    ],
                 };
 
                 res.status(200).json(createSuccessResponse(data));
