@@ -112,7 +112,7 @@ describe('nogueira-producer-client', function () {
             promiss
                 .catch(function (err) {
                     err.should.not.be.null;
-                    err.should.be.equals(500);
+                    err.code.should.be.equals(500);
                 })
                 .done(function () {
                     done();
@@ -142,10 +142,10 @@ describe('nogueira-producer-client', function () {
             var promiss = npc.getStatusForToken(token);
 
             promiss
-                .catch (function (err) {
-                    err.should.not.be.null;
-                    err.code.should.be.equals(400);
-                })
+                .catch(function (err) {
+                err.should.not.be.null;
+                err.code.should.be.equals(400);
+            })
                 .done(function () {
                     done();
                 });
@@ -156,7 +156,6 @@ describe('nogueira-producer-client', function () {
 
             var token = 'TOKEN-0003';
             var promiss = npc.getStatusForToken(token);
-
 
             promiss
                 .catch(function (err) {
@@ -177,7 +176,7 @@ describe('nogueira-producer-client', function () {
             promiss
                 .catch(function (err) {
                     err.should.not.be.null;
-                    err.should.be.equals(500);
+                    err.code.should.be.equals(500);
                 })
                 .done(function () {
                     done();

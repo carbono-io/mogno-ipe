@@ -1,10 +1,15 @@
 'use strict';
 
 var NogueiraProducerClient = require('../lib/nogueira-producer-client');
-var pjson                  = require('../../package.json');
-var CJM                    = require('carbono-json-messages');
+var pjson = require('../../package.json');
+var CJM = require('carbono-json-messages');
 
 module.exports = function () {
+
+    var createNogueiraProducerClient = function () {
+        return new NogueiraProducerClient();
+    };
+
     /**
      * Sends machine creation request to
      * Nogueira Producer.
@@ -14,7 +19,7 @@ module.exports = function () {
      * @param {Object} Response
      */
     var create = function (req, res) {
-        var npc = new NogueiraProducerClient();
+        var npc = machineController.createNogueiraProducerClient();
 
         var promiseCreateMachine = npc.createMachineRequest(req.body.data);
 
@@ -40,7 +45,7 @@ module.exports = function () {
      */
     var getTokenStatus = function (req, res) {
         var token = req.params.token;
-        var npc = new NogueiraProducerClient();
+        var npc = machineController.createNogueiraProducerClient();
 
         var promiseTokenStatus = npc.getStatusForToken(token);
 
@@ -54,7 +59,6 @@ module.exports = function () {
                         },
                     ],
                 };
-
                 res.status(200).json(createSuccessResponse(data));
             }, function (err) {
                 res.status(err.code).json(createErrorResponse(err));
@@ -89,14 +93,15 @@ module.exports = function () {
      * @returns {CarbonoJsonResponse} Response object following
      *                                Google's JSON style guide.
      */
-    var createErrorResponse = function (err, code, message) {
+    var createErrorResponse = function (err) { //, code, message
         var cjm = new CJM({apiVersion: pjson.version});
 
-        if (typeof code !== 'undefined') {
-            cjm.setError(code, message, [err]);
-        } else {
-            cjm.setError(err);
-        }
+        // never used
+        // if (typeof code !== 'undefined') {
+        //     cjm.setError(code, message, [err]);
+        // } else {
+        cjm.setError(err);
+        // }
 
         return cjm.toObject();
     };
@@ -104,6 +109,7 @@ module.exports = function () {
     var machineController = {
         create: create,
         getTokenStatus: getTokenStatus,
+        createNogueiraProducerClient: createNogueiraProducerClient,
     };
 
     return machineController;

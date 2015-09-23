@@ -11,8 +11,8 @@ var path    = require('path');
  * Nogueira Producer.
  * @class
  */
-var NogueiraProducerClient = function () {
-    var PRODUCER_BASE_URL = 'http://localhost:9471';
+var NogueiraProducerClient = function (producerBaseURL) {
+    var PRODUCER_BASE_URL = producerBaseURL || 'http://localhost:9471';
     var ENDPOINT_MACHINES = '/machines';
 
     /**
@@ -49,7 +49,7 @@ var NogueiraProducerClient = function () {
         options.json = payload;
 
         request.post(options, function (err, res, body) {
-            if (typeof body === 'string') {
+            if (typeof body === 'string' && res.statusCode < 500) {
                 body = JSON.parse(body);
             }
 
@@ -93,7 +93,7 @@ var NogueiraProducerClient = function () {
         var options = createBaseRequestForEndpoint(endpoint);
 
         request.get(options, function (err, res, body) {
-            if (typeof body === 'string') {
+            if (typeof body === 'string' && res.statusCode < 500) {
                 body = JSON.parse(body);
             }
 
@@ -102,7 +102,7 @@ var NogueiraProducerClient = function () {
                           (res.statusCode < 300);
 
             if (success) {
-                deffered.resolve(body.data.status);
+                deffered.resolve(body.data.items[0].status);
             } else {
                 var error = {
                     code: 500,
