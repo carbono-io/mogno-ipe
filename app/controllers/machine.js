@@ -93,16 +93,9 @@ module.exports = function () {
      * @returns {CarbonoJsonResponse} Response object following
      *                                Google's JSON style guide.
      */
-    var createErrorResponse = function (err) { //, code, message
+    var createErrorResponse = function (err) {
         var cjm = new CJM({apiVersion: pjson.version});
-
-        // never used
-        // if (typeof code !== 'undefined') {
-        //     cjm.setError(code, message, [err]);
-        // } else {
         cjm.setError(err);
-        // }
-
         return cjm.toObject();
     };
 

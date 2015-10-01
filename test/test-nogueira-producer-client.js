@@ -30,15 +30,14 @@ describe('nogueira-producer-client', function () {
                 ],
             };
 
-            var promiss = npc.createMachineRequest(data);
-
-            promiss
+            var promise = npc.createMachineRequest(data);
+            promise
                 .then(function (token) {
                     token.should.be.equals('TOKEN-0001');
-                })
-                .done(function () {
                     done();
-                });
+                })
+                .catch(function (err) {console.log(err);});
+
         });
 
         it('fail 400', function (done) {
@@ -55,14 +54,12 @@ describe('nogueira-producer-client', function () {
                 ],
             };
 
-            var promiss = npc.createMachineRequest(data);
+            var promise = npc.createMachineRequest(data);
 
-            promiss
+            promise
                 .catch(function (err) {
                     err.should.not.be.null;
                     err.code.should.be.equals(400);
-                })
-                .done(function () {
                     done();
                 });
         });
@@ -81,14 +78,12 @@ describe('nogueira-producer-client', function () {
                 ],
             };
 
-            var promiss = npc.createMachineRequest(data);
+            var promise = npc.createMachineRequest(data);
 
-            promiss
+            promise
                 .catch(function (err) {
                     err.should.not.be.null;
                     err.code.should.be.equals(404);
-                })
-                .done(function () {
                     done();
                 });
         });
@@ -107,14 +102,12 @@ describe('nogueira-producer-client', function () {
                 ],
             };
 
-            var promiss = npc.createMachineRequest(data);
+            var promise = npc.createMachineRequest(data);
 
-            promiss
+            promise
                 .catch(function (err) {
                     err.should.not.be.null;
                     err.code.should.be.equals(500);
-                })
-                .done(function () {
                     done();
                 });
         });
@@ -124,13 +117,11 @@ describe('nogueira-producer-client', function () {
         it('success', function (done) {
             var npc = new NogueiraProducerClient('http://localhost:3000/nog');
             var token = 'TOKEN-0001';
-            var promiss = npc.getStatusForToken(token);
+            var promise = npc.getStatusForToken(token);
 
-            promiss
+            promise
                 .then(function (status) {
                     status.should.be.equals('OK');
-                })
-                .done(function () {
                     done();
                 });
         });
@@ -139,14 +130,12 @@ describe('nogueira-producer-client', function () {
             var npc = new NogueiraProducerClient('http://localhost:3000/nog');
 
             var token = 'TOKEN-0002';
-            var promiss = npc.getStatusForToken(token);
+            var promise = npc.getStatusForToken(token);
 
-            promiss
+            promise
                 .catch(function (err) {
-                err.should.not.be.null;
-                err.code.should.be.equals(400);
-            })
-                .done(function () {
+                    err.should.not.be.null;
+                    err.code.should.be.equals(400);
                     done();
                 });
         });
@@ -155,14 +144,12 @@ describe('nogueira-producer-client', function () {
             var npc = new NogueiraProducerClient('http://localhost:3000/nog');
 
             var token = 'TOKEN-0003';
-            var promiss = npc.getStatusForToken(token);
+            var promise = npc.getStatusForToken(token);
 
-            promiss
+            promise
                 .catch(function (err) {
                     err.should.not.be.null;
                     err.code.should.be.equals(404);
-                })
-                .done(function () {
                     done();
                 });
         });
@@ -171,14 +158,12 @@ describe('nogueira-producer-client', function () {
             var npc = new NogueiraProducerClient('http://localhost:3000/nog');
 
             var token = 'TOKEN-0004';
-            var promiss = npc.getStatusForToken(token);
+            var promise = npc.getStatusForToken(token);
 
-            promiss
+            promise
                 .catch(function (err) {
                     err.should.not.be.null;
                     err.code.should.be.equals(500);
-                })
-                .done(function () {
                     done();
                 });
         });
