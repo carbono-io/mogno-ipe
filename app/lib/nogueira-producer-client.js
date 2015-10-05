@@ -1,10 +1,11 @@
 'use strict';
 
-var request = require('request');
-var q       = require('q');
-var CJM     = require('carbono-json-messages');
-var pjson   = require('../../package.json');
-var path    = require('path');
+var request        = require('request');
+var q              = require('q');
+var CJM            = require('carbono-json-messages');
+var pjson          = require('../../package.json');
+var path           = require('path');
+var serviceManager = require('carbono-service-manager');
 
 /**
  * Interface used to comunicate with our
@@ -12,7 +13,6 @@ var path    = require('path');
  * @class
  */
 var NogueiraProducerClient = function (producerBaseURL) {
-    var PRODUCER_BASE_URL = producerBaseURL || 'http://localhost:9471';
     var ENDPOINT_MACHINES = '/machines';
 
     /**
@@ -134,8 +134,11 @@ var NogueiraProducerClient = function (producerBaseURL) {
      * @returns {Object} Request object.
      */
     function createBaseRequestForEndpoint(endpoint) {
+
+        var _url = producerBaseURL ||
+                serviceManager.getServiceUrl('nog-storage');
         return {
-            url: PRODUCER_BASE_URL + (endpoint || ''),
+            url: 'http://' + _url + (endpoint || ''),
             headers: {
                 'Content-Type': 'application/json',
             },

@@ -17,7 +17,7 @@ describe('nogueira-producer-client', function () {
 
     describe('helper functions - createPayloadForData', function () {
         it('success2', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
 
             var data = {
                 id: 'id1234',
@@ -41,7 +41,7 @@ describe('nogueira-producer-client', function () {
         });
 
         it('fail 400', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
 
             var data = {
                 id: 'id1234',
@@ -65,7 +65,7 @@ describe('nogueira-producer-client', function () {
         });
 
         it('fail 404', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
 
             var data = {
                 id: 'id1234',
@@ -89,7 +89,7 @@ describe('nogueira-producer-client', function () {
         });
 
         it('fail 500', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
 
             var data = {
                 id: 'id1234',
@@ -115,19 +115,19 @@ describe('nogueira-producer-client', function () {
 
     describe('helper functions - getStatusForToken', function () {
         it('success', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
             var token = 'TOKEN-0001';
             var promise = npc.getStatusForToken(token);
 
             promise
                 .then(function (status) {
-                    status.should.be.equals('OK');
+                    status.should.be.equals(0);
                     done();
                 });
         });
 
         it('fail 400', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
 
             var token = 'TOKEN-0002';
             var promise = npc.getStatusForToken(token);
@@ -141,7 +141,7 @@ describe('nogueira-producer-client', function () {
         });
 
         it('fail 404', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
 
             var token = 'TOKEN-0003';
             var promise = npc.getStatusForToken(token);
@@ -155,7 +155,7 @@ describe('nogueira-producer-client', function () {
         });
 
         it('fail 500', function (done) {
-            var npc = new NogueiraProducerClient('http://localhost:3000/nog');
+            var npc = new NogueiraProducerClient('localhost:3000/nog');
 
             var token = 'TOKEN-0004';
             var promise = npc.getStatusForToken(token);

@@ -16,7 +16,7 @@ describe('test routes', function () {
         ipe = require('../');
 
         ipe.app.controllers.machine.createNogueiraProducerClient = function () {
-            return new NogueiraProducerClient('http://localhost:3000/nog');
+            return new NogueiraProducerClient('localhost:3000/nog');
         };
     });
 
@@ -109,7 +109,7 @@ describe('test routes', function () {
                 httpResponse.statusCode.should.be.equals(200);
                 var obj = JSON.parse(httpResponse.body);
                 obj.apiVersion.should.be.equals('0.0.1');
-                obj.data.items[0].status.should.be.equals('OK');
+                obj.data.items[0].status.should.be.equals(0);
 
                 done();
             });
