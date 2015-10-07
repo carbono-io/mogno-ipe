@@ -13,7 +13,7 @@ var serviceManager = require('carbono-service-manager');
  * @class
  */
 var NogueiraProducerClient = function (producerBaseURL) {
-    var ENDPOINT_MACHINES = '/machines';
+    var ENDPOINT_MACHINES = 'machines';
 
     /**
      * Makes a request to the Nogueira Producer
