@@ -39,7 +39,6 @@ var NogueiraProducerClient = function (producerBaseURL) {
         data.items.forEach(function (machine) {
             machine.imageName = machine.component;
 
-            delete machine.route;
             delete machine.component;
         });
 
