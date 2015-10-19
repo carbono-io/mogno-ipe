@@ -133,9 +133,9 @@ var NogueiraProducerClient = function (producerBaseURL) {
      * @returns {Object} Request object.
      */
     function createBaseRequestForEndpoint(endpoint) {
-
         var _url = producerBaseURL ||
                 serviceManager.getServiceUrl('nog');
+
         return {
             url: 'http://' + _url + (endpoint || ''),
             headers: {
