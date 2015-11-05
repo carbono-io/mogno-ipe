@@ -1,0 +1,13 @@
+{
+    "etcd": {
+        "host": "carbonohost",
+        "port": 12739,
+        "key" : "ipe",
+        "alias" : "Carbono PaaS - Mogno Ipe",
+        "namespace" : "/paas/",
+        "dependencies" : [
+                {"key" : "nog", "alias" : "Nogueira Producer"}
+        ]
+    },
+    "port" : 12739
+}
