@@ -13,7 +13,7 @@ var serviceManager = require('carbono-service-manager');
  * @class
  */
 var NogueiraProducerClient = function (producerBaseURL) {
-    var ENDPOINT_MACHINES = '/machines';
+    var ENDPOINT_MACHINES = 'machines';
 
     /**
      * Makes a request to the Nogueira Producer
@@ -39,7 +39,6 @@ var NogueiraProducerClient = function (producerBaseURL) {
         data.items.forEach(function (machine) {
             machine.imageName = machine.component;
 
-            delete machine.route;
             delete machine.component;
         });
 
@@ -134,9 +133,9 @@ var NogueiraProducerClient = function (producerBaseURL) {
      * @returns {Object} Request object.
      */
     function createBaseRequestForEndpoint(endpoint) {
-
         var _url = producerBaseURL ||
-                serviceManager.getServiceUrl('nog-storage');
+                serviceManager.getServiceUrl('nog');
+
         return {
             url: 'http://' + _url + (endpoint || ''),
             headers: {
